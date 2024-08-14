@@ -1,24 +1,25 @@
-name: Deploy Jekyll site to GitHub Pages
+name: Node.js CI
+
 on:
   push:
     branches:
       - main
+
 jobs:
   build:
     runs-on: ubuntu-latest
+
     steps:
     - name: Checkout code
       uses: actions/checkout@v2
-    - name: Setup Ruby
-      uses: ruby/setup-ruby@v1
+
+    - name: Set up Node.js
+      uses: actions/setup-node@v2
       with:
-        ruby-version: 3.0
+        node-version: '14'
+
     - name: Install dependencies
-      run: bundle install
-    - name: Build the site
-      run: bundle exec jekyll build --source ./docs --destination ./docs/_site
-    - name: Deploy to GitHub Pages
-      uses: peaceiris/actions-gh-pages@v3
-      with:
-        github_token: ${{ secrets.GITHUB_TOKEN }}
-        publish_dir: ./docs/_site
+      run: npm install
+
+    - name: Run JSON Server
+      run: npm start
